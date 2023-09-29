@@ -2,28 +2,28 @@
 ---
 
 - name: Include distribution specific variables
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
   tags: tftp
 
 - name: Configure SELinux if it is active on the system
-  include_tasks: selinux.yml
+  ansible.builtin.include_tasks: selinux.yml
   when: >
     ansible_selinux is defined
     and ansible_selinux != false
     and ansible_selinux.status == 'enabled'
 
 - name: Install packages
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items: "{{ tftp_packages }}"
   tags: tftp
 
 - name: Ensure tftp root directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ tftp_root_directory }}"
     state: directory
     owner: "{{ tftp_user }}"
@@ -33,7 +33,7 @@
   tags: tftp
 
 - name: Install configuration file
-  template:
+  ansible.builtin.template:
     dest: "{{ tftp_config }}"
     src: systemd_tftp.service.j2
   notify:
@@ -41,14 +41,14 @@
   tags: tftp
 
 - name: Ensure service is started
-  service:
+  ansible.builtin.service:
     name: "{{ tftp_service }}"
     state: started
     enabled: true
   tags: tftp
 
 - name: Install foreman map file
-  template:
+  ansible.builtin.template:
     dest: "{{ tftp_foreman_map_file }}"
     src: etc_tftpd.map.j2
   notify:

@@ -2,14 +2,18 @@
 # {{ ansible_managed }}
 [Unit]
 Description=Tftp Server
+{% if tftp_socket %}
 Requires=tftp.socket
+{% endif %}
 Documentation=man:in.tftpd
 
 [Service]
 ExecStart={{ tftp_server }} {{ tftp_server_args }} {{ tftp_root_directory }}
+{% if tftp_socket %}
 StandardInput=socket
 
 [Install]
 Also=tftp.socket
+{% endif %}
 
 # vi: ft=systemd
