@@ -1,0 +1,7 @@
+# /etc/default/tftpd-hpa
+{{ ansible_managed | comment }}
+
+TFTP_USERNAME="tftp"
+TFTP_DIRECTORY="{{ tftp_root_directory }}"
+TFTP_ADDRESS="{{ tftp_listen_address | default('') }}:{{tftp_port | default('69') }}"
+TFTP_OPTIONS="{{ tftp_server_args }}"

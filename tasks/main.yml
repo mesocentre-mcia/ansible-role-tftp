@@ -32,13 +32,23 @@
     setype: "{{ tftp_setype }}"
   tags: tftp
 
-- name: Install configuration file
+- name: Install service file
   ansible.builtin.template:
     dest: "{{ tftp_config }}"
     src: systemd_tftp.service.j2
   notify:
     - restart tftp
   tags: tftp
+  when: tftp_config is defined
+
+- name: Install defaults file
+  ansible.builtin.template:
+    dest: "{{ tftp_defaults }}"
+    src: etc_default_tftpd-hpa.j2
+  notify:
+    - restart tftp
+  tags: tftp
+  when: tftp_defaults is defined
 
 - name: Ensure service is started
   ansible.builtin.service:

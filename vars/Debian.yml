@@ -3,10 +3,8 @@
 tftp_packages:
   - tftpd-hpa
 
-tftp_service: tftp.service
-tftp_socket: false
+tftp_service: tftpd-hpa
 
 tftp_server: /usr/sbin/in.tftpd
-tftp_config: /usr/lib/systemd/system/tftp.service
 
-tftp_foreman_map_file: /etc/tftpd.map
+tftp_defaults: /etc/default/tftpd-hpa
